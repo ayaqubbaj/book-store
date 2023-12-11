@@ -35,7 +35,20 @@ const books=[
   */
  
  router.get("/" , asyncHandler(async (req,res) => {
-    const books=await Book.find().populate("author", ["_id","firstname","lastname"]);
+    //comparioson query operators
+    //$in : [8,9] //$nin //$eq //$ne //$lt //$lte //$gt //$gte 
+    
+    
+    const {minPrice,maxPrice} =req.query;
+    let books;
+    if(minPrice && maxPrice ){
+     books=await Book.find({price: {$gte:minPrice,$lte:maxPrice}})
+        .populate("author", ["_id","firstname","lastname"]);
+    }else {
+        books=await Book.find()
+        .populate("author", ["_id","firstname","lastname"]); 
+    }
+    
     res.status(200).json(books);
  }));
 

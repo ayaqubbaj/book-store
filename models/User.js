@@ -31,6 +31,32 @@ const UserSchema = new mongoose.Schema({
     type: Boolean, 
    default: false,
     },
+    location:{
+        type: String, 
+        required: true,
+        trim: true,
+        minlength: 2,
+        maxlength:100,
+    },
+    threshold:{
+        type: Number, 
+        required: true,
+        min: 0,
+        },
+    intrests:{
+            type: String, 
+            required: true,
+            enum:["Ozone Layer",
+                "Water pollution",
+                "Air pollution",
+                "Global warming"]
+        },
+        connections: [{
+            userId: {
+              type: mongoose.Schema.Types.ObjectId,
+              ref: 'User'
+            },
+          }],
     
     
 
@@ -51,7 +77,12 @@ function validateRegister(obj){
         email : joi.string().trim().min(5).max(100).required().email(),
         username: joi.string().trim().min(2).max(200).required(),
         password: joi.string().trim().min(6).required(),
-        
+        location:joi.string().trim().min(2).max(100).required(),
+        threshold:joi.number().min(0).required(),
+        intrests:joi.string().valid("Ozone Layer",
+        "Water pollution",
+        "Air pollution",
+        "Global warming").required(),
     });
     return schema.validate(obj);
 }

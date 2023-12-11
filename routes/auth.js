@@ -13,7 +13,7 @@ const jwt = require("jsonwebtoken");
   * @access public
   */
 
- router.post("/register",asyncHandler(async (req,res) =>{
+router.post("/register",asyncHandler(async (req,res) =>{
 const {error} = validateRegister(req.body);
 if(error){
 return res.status(400).json({message: error.details[0].message});
@@ -29,9 +29,12 @@ req.body.password =await bcrypt.hash(req.body.password, salt);
 
 
 user = new User({
-   email : req.body.email ,
-    username : req.body.username ,
+     email : req.body.email ,
+     username : req.body.username ,
      password : req.body.password ,
+     location: req.body.location ,
+     threshold:req.body.threshold ,
+     intrests:req.body.intrests ,
     
    });
 
